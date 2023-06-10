@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  
+  <!-- CSS -->
+  <link rel="stylesheet" href="css/base.css">
+  <link type="text/css" rel="stylesheet" href="css/swiper-bundle.min.css" /> 
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+
+  <title>Trinodo Shop</title>
+</head>
+
+<body class="theme">
+
+  <!-- Header -->
+  <div class="top-banner"><p class="top-banner__text">OFERTA: Entregas a domicilio sin cargo hasta 10km de distancia.</p></div>
+
+  <header class="header">
+    <div class="header__holder">
+
+        <div class="header__inner">
+          <div class="header__inner__left">
+              <nav class="navbar-icon">
+                <ul class="navbar-icon__list">
+                  <li class="navbar-icon__item"><button id="btn-menu-mobile" class="navbar-icon__link"><i class="ri-menu-2-line"></i></button></li>
+                </ul>
+              </nav>
+
+            <div class="logo">
+              <a href="index.php"><img src="images/logo-tienda.png"></a>
+            </div>
+          </div>
+
+          <div class="header__inner__center">
+              <nav class="navbar-primary">
+                <ul class="navbar-primary__list">
+                  <li class="navbar-primary__item --dropdown"><button id="btn-menu-desktop" class="navbar-primary__link navbar-primary__link--bold">Categorias<i class="ri-arrow-down-s-line --arrow"></i></button>
+                    <div id="menu-desktop" class="menu-dropdown">
+                      <div class="menu-dropdown__nav">
+                        <ul>
+                          <li><a href="#" class="navbar-primary__sublink">Placas de video</a></li>
+                          <li><a href="#" class="navbar-primary__sublink">Motherboards</a></li>
+                          <li><a href="#" class="navbar-primary__sublink">Perifericos</a></li>
+                          <li><a href="#" class="navbar-primary__sublink">Fuentes de alimentación</a></li>
+                          <li><a href="#" class="navbar-primary__sublink">Monitores</a></li>
+                        </ul>
+                      </div>
+                    </div>
+                
+                  </li>
+                  <li class="navbar-primary__item"><a href="#" class="navbar-primary__link">Nosotros</a></li>
+                  <li class="navbar-primary__item"><a href="#" class="navbar-primary__link">Contacto</a></li>
+                  <li class="navbar-primary__item"><a href="#" class="navbar-primary__link navbar-primary__link--featured">Ofertas</a></li>
+                </ul>
+              </nav> 
+          </div>
+
+          <div class="header__inner__right">
+              <div class="social">
+                <a class="social__item social__item--white" href=""><i class="ri-facebook-fill"></i></a>
+                <a class="social__item social__item--white" href=""><i class="ri-twitter-fill"></i></a>
+                <a class="social__item social__item--white" href=""><i class="ri-instagram-line"></i></a>
+                <a class="social__item social__item--white" href=""><i class="ri-youtube-fill"></i></a>
+              </div>
+
+              <nav class="navbar-icon">
+                <ul class="navbar-icon__list">
+                  <li class="navbar-icon__item"><a href="login.html" class="navbar-icon__link"><i class="ri-user-line"></i></a></li>
+                  <li class="navbar-icon__item --dropdown"><button id="btn-navmenu-search" class="navbar-icon__link"><i class="ri-search-line"></i></button></li>
+                  <li class="navbar-icon__item"><button id="btn-navmenu-cart" class="navbar-icon__link"><i class="ri-shopping-cart-2-line"></i><span class="navbar-icon__link__count">2</span></button></li>
+                </ul>
+              </nav>
+          </div>
+
+          <div class="menu-search">
+            <div class="menu-search__holder">
+              <div class="form-item form-item--icon">
+                <button><i class="ri-search-line"></i></button>
+                <input type="text" autocomplete="off" id="nombre" class="input input--big" placeholder="¿Qué estás buscando?" aria-label="¿Qué estás buscando?" required="">
+              </div>
+            </div>
+          </div>
+
+            <div id="menu-cart" class="menu-dropdown menu-dropdown--cart">
+              <div class="menu-dropdown__nav">
+                <div class="menu-dropdown__top">
+                  <p class="section__title section__title--small"><button id="btn-close-menu-cart" class="button button--icon-close"><i class="ri-close-line"></i></button>Tu carrito</p>
+                </div>
+                <div class="menu-dropdown__nav__list">
+                  
+
+                </div>
+                <div class="menu-dropdown__nav__item --total">
+                  <p class="checkout__summary__title --big">Total <span>(2 items)</span></p>
+                  <strong class="checkout__summary__price --big">$200.000</strong>
+                </div>
+                  
+                <div class="menu-dropdown__bottom">
+                  <button class="button button--secondary">Seguir comprando</button>
+                  <button class="button button--primary">Finalizar compra</button>
+                </div>
+              </div>           
+            </div>
+            <div class="menu-dropdown__overlay"></div>
+
+        </div>
+    </div>
+    
+  </header>
+  <main>
+
+<section class="header-page header-page--checkout --success">
+    <div class="header-page__holder">
+        <div class="header-page__item">
+            <i class="header-page__icon --mb15 ri-user-add-line"></i>
+            <h2 class="section__title section__title--ultra-big --c-grey-0 --mb9 --desktop">Registrate</h2>
+            <h2 class="section__title section__title--big --c-grey-0 --mb9 --mobile">Registrate</h2>
+        </div>
+    </div>
+</section>
+
+<section class="section section--checkout">
+    <div class="section__holder">
+        <div class="section__inner section__inner--width50">
+            <div class="section__item section__item--background">
+                <p class="section__text section__text--big --text-center --mb30">Por favor completa los siguientes datos <strong>para registrarte</strong></p>
+                <form class="contact__form">
+                    <div class="form-item --full">
+                        <div class="form-item__input">
+                            <input type="text" id="cod1" class="input input--secondary" required="">
+                            <label class="form-item__label">Nombre</label>
+                        </div>
+                    </div>
+
+                    <div class="form-item --full">
+                        <div class="form-item__input">
+                            <input type="text" id="cod1" class="input input--secondary" required="">
+                            <label class="form-item__label">Apellido</label>
+                        </div>
+                    </div>
+
+                    <div class="form-item --full">
+                        <div class="form-item__input">
+                            <input type="email" id="cod1" class="input input--secondary" required="">
+                            <label class="form-item__label">Email</label>
+                        </div>
+                    </div>
+
+                    <div class="form-item --full">
+                        <div class="form-item__input">
+                            <input type="password" id="cod1" class="input input--secondary" required="">
+                            <label class="form-item__label">Contraseña</label>
+                        </div>
+                    </div>
+
+                    <div class="form-item --full --center --mt25">
+                        <button class="button button--primary">Registrarse</button>
+                    </div>
+                </form>
+                
+            </div>
+        </div>
+
+    </div>
+</section>
+
+
+ 
+<!-- Footer -->
+<footer class="footer">
+  <div class="section__holder">
+      <div class="logo logo--small --mb25">
+          <a href="#"><img src="images/logo-tienda.png"></a>
+      </div>
+      <div class="section__inner section__inner--grid-3">
+
+        <div class="footer__item">
+
+            <h2 class="footer__title --mb20">Sede central</h2>
+            <div class="contact-info --mb25">
+                <p class="contact-info__list"><i class="ri-map-pin-line"></i>Florida 537 Local 370 (CABA)</p>
+                <p class="contact-info__list"><i class="ri-whatsapp-line"></i>+54 911 3934 1696</p>
+                <p class="contact-info__list"><i class="ri-mail-line"></i>web@fullh4rd.com.ar</p>
+                <button class="button button--small button--link button--link-primary --mt12">Ver todas las sucursales</button>
+            </div>
+
+            <div class="social">
+                <a class="social__item social__item--facebook" href=""><i class="ri-facebook-fill"></i></a>
+                <a class="social__item social__item--twitter" href=""><i class="ri-twitter-fill"></i></a>
+                <a class="social__item social__item--instagram" href=""><i class="ri-instagram-line"></i></a>
+                <a class="social__item social__item--youtube" href=""><i class="ri-youtube-fill"></i></a>
+            </div>  
+            
+           
+            
+        </div>
+
+        <div class="footer__item">
+          <h2 class="footer__title --mb20">Secciones</h2>
+          <nav class="navbar-secondary">
+            <ul class="navbar-secondary__list">
+              <li class="navbar-secondary__item"><a href="" class="navbar-secondary__link">Categorias</a></li>
+              <li class="navbar-secondary__item"><a href="" class="navbar-secondary__link">Nosotros</a></li>
+              <li class="navbar-secondary__item"><a href="" class="navbar-secondary__link">Contacto</a></li>
+            </ul>
+          </nav>   
+        </div>
+
+        <div class="footer__item footer__item--right">
+          <div class="contact-info --mb20">
+            <img src="images/pagoseguro.png">
+            <a href="#"><img class="contact-info__qr" src="images/data_qr.jpg"></a>
+          </div>
+            <nav class="navbar-secondary">
+              <ul class="navbar-secondary__list">
+                <li class="navbar-secondary__item"><a href="" class="navbar-secondary__link">Boton de arrepentimiento</a></li>
+              </ul>
+            </nav> 
+        </div>
+      </div>
+  </div> 
+</footer>
+
+
+<div class="copyright">
+  <div class="copyright__item">
+      <p class="copyright__text">Sitio realizado con <i class="ri-heart-fill"></i> por <a href="#"><img src="images/logo-trinodo.png"></a></p></a>
+  </div>
+</div> 
+
+
+<!-- Whatsapp flotante -->
+<a href="" class="whatsapp-float" target="_blank">
+  <span class="whatsapp-float__text">Escribinos</span>
+  <i class="whatsapp-float__icon ri-whatsapp-line"></i>
+</a>
+
+<!-- Menu mobile -->
+<div id="menu-mobile" class="menu-mobile">
+  <div class="menu-mobile__top">
+      <button id="btn-close-menu-mobile" class="button button--icon-close"><i class="ri-close-line"></i></button>
+      <p class="section__title">Categorias</p>
+  </div>
+
+  <div class="menu-mobile__nav">
+    <nav class="navbar-primary">
+      <ul class="navbar-primary__list">
+
+        <li class="navbar-primary__item">
+          <a href="#" class="navbar-primary__link navbar-primary__link--featured">Ofertas</a>
+        </li>
+      
+
+        <li class="navbar-primary__item">
+          <a href="#" id="js-btn-menu-mobile" class="navbar-primary__link">Placas de video</a>
+        </li>
+
+        <li class="navbar-primary__item">
+          <a href="#" class="navbar-primary__link">Motherboards</a>
+        </li> 
+
+        <li class="navbar-primary__item">
+          <a href="#" class="navbar-primary__link">Perifericos</a>
+        </li>
+
+        <li class="navbar-primary__item">
+          <a href="#" class="navbar-primary__link">Fuentes de alimentación</a>
+        </li>
+
+        <li class="navbar-primary__item">
+          <a href="#" class="navbar-primary__link">Monitores</a>
+        </li>
+        
+      </ul>
+    </nav>
+  </div>
+
+  <div class="menu-mobile__bottom">
+    <nav class="navbar-secondary">
+      <ul class="navbar-secondary__list">
+        <li class="navbar-secondary__item"><a href="" class="navbar-secondary__link --no-underline"><i class="ri-building-line --icon"></i>Nosotros</a></li>
+        <li class="navbar-secondary__item"><a href="" class="navbar-secondary__link --no-underline"><i class="ri-mail-line --icon"></i>Contacto</a></li>
+      </ul>
+    </nav>
+  </div>
+</div>
+
+
+<!-- Scripts -->
+<script src="js/others/jquery.min.js"></script>
+<script src="js/others/jquery.mousewheel.min.js"></script>
+<script src="js/others/swiper-bundle.min.js"></script>
+<script src="js/others/sliders.js"></script>
+
+<script src="js/productsBD.js"></script>
+<script src="js/functions.js"></script>
+
+</body>
+</html>
