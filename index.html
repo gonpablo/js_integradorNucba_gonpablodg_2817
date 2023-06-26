@@ -70,12 +70,12 @@
                 <ul class="navbar-icon__list">
                   <li class="navbar-icon__item"><a href="login.html" class="navbar-icon__link"><i class="ri-user-line"></i></a></li>
                   <li class="navbar-icon__item --dropdown"><button id="btn-navmenu-search" class="navbar-icon__link"><i class="ri-search-line"></i></button></li>
-                  <li class="navbar-icon__item"><button id="btn-navmenu-cart" class="navbar-icon__link"><i class="ri-shopping-cart-2-line"></i><span class="navbar-icon__link__count">2</span></button></li>
+                  <li class="navbar-icon__item"><button id="btn-navmenu-cart" class="navbar-icon__link"><i class="ri-shopping-cart-2-line"></i><span id="navbar-icon__link__count" class="navbar-icon__link__count --hidden"></span></button></li>
                 </ul>
               </nav>
           </div>
 
-          <div class="menu-search">
+          <div id="menu-search" class="menu-search">
             <div class="menu-search__holder">
               <div class="form-item form-item--icon">
                 <button><i class="ri-search-line"></i></button>
@@ -89,18 +89,18 @@
                 <div class="menu-dropdown__top">
                   <p class="section__title section__title--small"><button id="btn-close-menu-cart" class="button button--icon-close"><i class="ri-close-line"></i></button>Tu carrito</p>
                 </div>
-                <div class="menu-dropdown__nav__list">
+                <div id="menu-cart-list" class="menu-dropdown__nav__list">
                   
 
                 </div>
-                <div class="menu-dropdown__nav__item --total">
-                  <p class="checkout__summary__title --big">Total <span>(2 items)</span></p>
-                  <strong class="checkout__summary__price --big">$200.000</strong>
+                <div id="checkout__summary__content" class="menu-dropdown__nav__item --total --hidden">
+                  <p class="checkout__summary__title --big">Total <span id="checkout__summary__items"></span></p>
+                  <strong id="checkout__summary__total" class="checkout__summary__price --big"></strong>
                 </div>
                   
                 <div class="menu-dropdown__bottom">
-                  <button class="button button--secondary">Seguir comprando</button>
-                  <button class="button button--primary">Finalizar compra</button>
+                  <button id="btn-clear-cart" class="button button--secondary button--disabled">Limpiar carrito</button>
+                  <button id="btn-finish-cart" class="button button--primary button--disabled">Finalizar compra</button>
                 </div>
               </div>           
             </div>
@@ -213,9 +213,6 @@
               <div id="products-content" class="section__inner section__inner--grid-4 --cards-popular">
 
               </div>
-              <div class="section__item --mt50 --center">
-                <a href="#" class="button button--primary">Ver todos</a>
-              </div> 
             </div>  
         </div>
       </div>
@@ -249,7 +246,9 @@
       </div>    
     </section>
 
-    <section class="section section--featured">
+    <hr class="section__separate">
+
+    <section class="section">
       <div class="section__holder">
           <div class="section__item__top --mb40">
             <h2 class="section__title --text-center --mb6">Contactate <strong>con nosotros</strong></h2>
@@ -261,37 +260,38 @@
             <form class="contact__form">
                   <div class="form-item">
                       <div class="form-item__input">
-                          <input type="text" id="cod1" class="input input--secondary" required="">
+                          <input type="text" id="name" class="input input--secondary">
                           <label class="form-item__label">Nombre</label>
                       </div>
+                      <span class="input-alert"></span>
                   </div>
 
                   <div class="form-item">
                       <div class="form-item__input">
-                          <input type="text" id="cod1" class="input input--secondary" required="">
+                          <input type="text" id="lastname" class="input input--secondary">
                           <label class="form-item__label">Apellido</label>
                       </div>
+                      <span class="input-alert"></span>
                   </div>
 
                   <div class="form-item --full">
                       <div class="form-item__input">
-                          <input type="text" id="cod1" class="input input--error input--secondary" required="">
+                          <input type="text" id="email" class="input input--secondary">
                           <label class="form-item__label">Email</label>
                       </div>
-                      <span class="input-alert"><i class="ri-error-warning-line"></i>El email es invalido</span>
+                      <span class="input-alert"></span>
                   </div>
 
                   <div class="form-item --full">
                       <div class="form-item__input">
-                          <textarea id="" class="input input--secondary input--textarea" rows="4" cols="50" required></textarea>
+                          <textarea id="message" class="input input--secondary input--textarea" rows="4" cols="50"></textarea>
                           <label class="form-item__label form-item__label--textarea">Mensaje</label>
                       </div>
+                      <span class="input-alert"></span>
                   </div>
 
                   <div class="form-item --full">
-                      <div class="info-text">
-                          <i class="ri-error-warning-line --icon"></i><span>El vendedor te respondera a traves del email que ingreses acá</span>
-                      </div> 
+                      <div class="info-text info-text--sucess --hidden"></div> 
                   </div>
 
                   <div class="form-item --full --center --mt25">
@@ -303,7 +303,7 @@
     </section>
 
 
-    <section class="section">
+    <section class="section section--featured">
       <div class="section__holder">
         <div class="swiper-container section__carrousel section__carrousel--w100 js-slider-hightlights">
           <div class="swiper-wrapper">
@@ -334,9 +334,7 @@
       </div>    
     </section>
 
-    <div class="info-text info-text--fixed info-text--sucess">
-      <i class="ri-check-double-line --icon"></i><span>Tu mensaje se ha enviado con exito y sera respondido a la brevedad.</span>
-    </div> 
+
 
     </main>
     
@@ -458,6 +456,9 @@
     </nav>
   </div>
 </div>
+
+
+<div id="message-content" class="info-text info-text--fixed info-text--sucess"></div>
 
 
 <!-- Scripts -->

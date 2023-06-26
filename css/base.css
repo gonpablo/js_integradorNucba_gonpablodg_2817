@@ -662,6 +662,11 @@ body {
     display: none !important;
   }
 }
+
+.--hidden {
+  display: none !important;
+}
+
 .section {
   padding: 2.5rem 0rem;
 }
@@ -1632,7 +1637,7 @@ body {
   }
 }
 
-.input:focus ~ .form-item__label, .input:valid ~ .form-item__label {
+.input:focus ~ .form-item__label, .input.--valid ~ .form-item__label {
   top: 0%;
   background-color: var(--c-grey-0);
   padding: 0rem 0.375rem;
@@ -1641,12 +1646,12 @@ body {
   font-size: 0.75rem;
 }
 
-.input:focus ~ .input::placeholder, .input:valid ~ .input::placeholder {
+.input:focus ~ .input::placeholder, .input.--valid ~ .input::placeholder {
   color: var(--c-grey-80);
 }
 
 @media (min-width: 768px) {
-  .input:focus ~ .form-item__label, .input:valid ~ .form-item__label {
+  .input:focus ~ .form-item__label, .input.--valid ~ .form-item__label {
     font-size: 0.875rem;
   }
 }
@@ -1845,9 +1850,10 @@ body {
   border-radius: 0.375rem;
   cursor: pointer;
 }
-.quantity-input__btn:disabled {
+.quantity-input__btn.--disabled {
   background-color: var(--c-grey-5);
   color: var(--c-grey-60);
+  cursor: not-allowed;
 }
 .quantity-input input {
   height: 1.75rem;
@@ -2216,6 +2222,8 @@ body {
   font-weight: var(--f-medium);
   border-radius: 0.375rem;
 }
+
+
 .info-text .--icon {
   font-size: 1.5rem;
   color: var(--c-primary);

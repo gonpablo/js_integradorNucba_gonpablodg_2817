@@ -2,57 +2,111 @@
 const btnCard = document.querySelector("#btn-navmenu-cart");
 const btnMenuMobile = document.querySelector("#btn-menu-mobile");
 const btnMenuDesktop = document.querySelector("#btn-menu-desktop");
+const btnMenuSearch = document.querySelector("#btn-navmenu-search");
 const btnCloseMenuMobile = document.querySelector("#btn-close-menu-mobile");
 const btnCloseMenuCart = document.querySelector("#btn-close-menu-cart");
-const btnAddToCart = document.querySelector(".button--small");
+const btnIconQuantityCart = document.querySelector("#navbar-icon__link__count"); 
+const btnClearCart = document.querySelector("#btn-clear-cart");
+const btnFinishCart = document.querySelector("#btn-finish-cart");
 
 
 // Captura contenedores 
+const messageContent = document.querySelector("#message-content");
 const cartContent = document.querySelector(".menu-dropdown__nav__list");
 const tabsContent = document.querySelector(".tabs-primary__content");
 const productsContent = document.querySelector("#products-content");
+const cartItemContent = document.querySelector("#menu-cart-list");
 const filtersContent = document.querySelector(".tabs-primary__inner");
+const productsCartQuantity = document.querySelector("#checkout__summary__items");
+const productsCartTotal = document.querySelector("#checkout__summary__total");
+const productsCartTotalContent = document.querySelector("#checkout__summary__content");
+
+
+// Captura elementos formulario
+const contactForm = document.querySelector(".contact__form");
+const nameInput = document.getElementById("name");
+const lastnameInput = document.getElementById("lastname");
+const emailInput = document.getElementById("email");
+const messageInput = document.getElementById("message");
+const messageSucess = document.querySelector(".info-text--sucess")
 
 
 // Captura menu / overlay
 const menuDesktop = document.querySelector("#menu-desktop");
 const menuMobile = document.querySelector("#menu-mobile");
 const menuCart = document.querySelector("#menu-cart"); 
+const menuSearch = document.querySelector("#menu-search"); 
 const menuOverlay = document.querySelector(".menu-dropdown__overlay");
 
 
 
+// GUARDAR EN LOCALSTORE
+let cartList = JSON.parse(localStorage.getItem("cart")) || [];
+
+const saveCartProducts = () => {
+	localStorage.setItem("cart", JSON.stringify(cartList));
+};
 
 
-// Guardar en LocalStorage
-/*let cart = JSON.parse(localStorage.getItem("cart")) || [];*/
-let cartList = [];
-
-
-
-// Funciones auxiliares 
+// FUNCIONES AUXILIARES
 const isBtnCategory = (btn) => {
-  tabsContent.classList.add("--active");
 	return (btn.classList.contains("tabs-primary__item__btn"));
 };
 
 
-
 const captureProduct = (id) => {
-  return productFilter = productsBD.filter((item) => {
+  return productFind = productsBD.find((item) => {
     return item.id === id;
   });
 }
 
 const isExistingCartProduct = (id) => {
   return cartList.find((item) => {
-    return item[0].id === id;
+    return item.id === id;
   })
 }
 
+const setValueInput = (input) => {
+  return input.classList.add("--valid");
+};
+
+const removeValueInput = (input) => {
+  return input.classList.remove("--valid");
+}
+
+const IsLengthInput = (input) => {
+  if(input.value.trim().length) {
+    setValueInput(input);
+  } else {
+    removeValueInput(input);
+  }
+  
+  return input.value.trim().length;
+}
+
+const IsValidEmailInput = (input) => {
+  const RegExp = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/;
+	return RegExp.test(input.value.trim());
+}
 
 
-// Funciones principales 
+const clearCart = () => {
+  return cartList = [];
+}
+
+const enabledOrDisabledBtnCart = () => {
+  if(cartList.length) {
+    btnClearCart.classList.remove("button--disabled");
+    btnFinishCart.classList.remove("button--disabled");
+    return true;
+  }
+  btnClearCart.classList.add("button--disabled");
+  btnFinishCart.classList.add("button--disabled");
+  return false;  
+};
+
+
+// FUNCIONES PRINCIPALES 
 const openMenuDesktop = () => {
   menuDesktop.classList.toggle("--active");
   menuOverlay.classList.toggle("--active");
@@ -61,7 +115,7 @@ const openMenuDesktop = () => {
 
 const openMenuMobile = () => {
   menuMobile.classList.toggle("--active");
-}
+};
 
 const openMenuCart = () => {
   menuCart.classList.toggle("--active");
@@ -72,6 +126,7 @@ const closeMenuClickOverlay = () => {
   menuDesktop.classList.remove("--active");
   menuOverlay.classList.remove("--active");
   menuCart.classList.remove("--active");
+  menuSearch.classList.remove("--active");
 };
 
 
@@ -84,7 +139,55 @@ const closeMenuCart = () => {
   menuOverlay.classList.remove("--active");
 };
 
+const openMenuSearch = () => {
+  menuSearch.classList.add("--active");
+  menuOverlay.classList.toggle("--active");
+};
 
+
+// Template mensaje exitoso del carrito
+const templateMessageSucessCart = (textMessage) => {
+  messageContent.classList.add("--active");
+  messageContent.innerHTML = `<i class="ri-check-double-line --icon"></i><span>${textMessage}</span>`;
+
+  setTimeout(() => {
+    messageContent.classList.remove("--active");
+    messageContent.innerHTML = ``;
+  }, 2500);
+};
+
+
+// Template Mensaje error input
+const templateMessageErrorInput = (textMessage, input) => {
+  const formItem = input.parentElement;
+  const formItemLast = formItem.parentElement;
+  const getSpamError = formItemLast.querySelector(".input-alert");
+  getSpamError.innerHTML = `<i class="ri-error-warning-line"></i>${textMessage}`;  
+  input.classList.add("input--error");
+};
+
+
+// Template Mensaje exitoso input 
+const templateMessageSucessInput = (input) => {
+  const formItem = input.parentElement;
+  const formItemLast = formItem.parentElement;
+  const getSpamError = formItemLast.querySelector(".input-alert");
+  getSpamError.innerHTML = ``;  
+  input.classList.remove("input--error");
+};
+
+// Template Mensaje exitoso formulario 
+const templateMessageSucessForm = (textMessage) => {
+  messageSucess.classList.remove("--hidden");
+  messageSucess.innerHTML = `<i class="ri-error-warning-line --icon"></i>${textMessage}`;
+  
+  setTimeout(() => {
+    messageSucess.classList.add("--hidden");
+    messageSucess.innerHTML = ``;
+  }, 3500);
+};
+
+// Template productos
 const createCardTemplate = (productList) => {
   const {id, productImg, category, name, priceNormal, priceDiscount, textOffert, featured } = productList;
   return `<div class="card-shop card-shop--small">
@@ -125,17 +228,16 @@ const createCardTemplate = (productList) => {
 };
 
 
-
+// Renderizar productos
 const renderCardProducts = (productList) => {
   productList.sort(function() { return Math.random() - 0.5 });
   productsContent.innerHTML = productList.map(createCardTemplate).join("");
 };
 
 
+// Template productos del carrito
 const createCartTemplate = (productCart) => {
-
-  const {id, productImg, name, priceNormal, priceDiscount, textOffert} = productCart[0];
-  const {quantity} = productCart;
+  const {id, productImg, name, priceNormal, priceDiscount, textOffert, quantity} = productCart;
 
   return `
     <div class="menu-dropdown__nav__item">
@@ -144,7 +246,7 @@ const createCartTemplate = (productCart) => {
             <img class="card-shop-horizontal__image__figure" src=${productImg}>
         </div>
         <div class="card-shop-horizontal__content">
-          <button data-id="${id}" class="button button--link button--ultra-big button--link-grey --no-underline"><i class="ri-delete-bin-line"></i></button>
+          <button data-id="${id}" class="ri-delete-bin-line button button--link button--ultra-big button--link-grey --no-underline"></button>
           <div class="card-shop-horizontal__top">
               <p class="card-shop-horizontal__title">${name}</p>
           </div> 
@@ -158,26 +260,27 @@ const createCartTemplate = (productCart) => {
                 `</p>
             </div>
             <div class="quantity-input">
-              <button class="quantity-input__btn">-</button>
-              <input type="number" id="qty" name="qty" value="${quantity}" step="1" min="1" max="20" readonly="readonly">
-              <button class="quantity-input__btn">+</button>
+              <button data-id="${id}" class="quantity-input__btn --down">-</button>
+              <input type="number" value="${quantity}" step="1" min="1" max="99" readonly="readonly">
+              <button data-id="${id}" class="quantity-input__btn --up">+</button>
             </div>
           </div>
         </div> 
       </div>
     </div>`
-}
+};
 
+// Renderizar productos del carrito
 const renderCartProducts = () => {
   if (!cartList.length) {
 		cartContent.innerHTML = `<p class="section__text">No hay productos en el carrito.</p>`;
 		return;
 	}
-
   cartContent.innerHTML = cartList.map(createCartTemplate).join("");
-}
+};
 
 
+// Agregado de campo "Cantidad" al producto
 const createCartProduct = (product) => {
 	cartList = [
 		...cartList,
@@ -188,80 +291,326 @@ const createCartProduct = (product) => {
 	];
 };
 
-const addCartProduct = (product) => {
+
+// Agregar una unidad al producto
+const addUnitCartProduct = (product) => {
   cartList = cartList.map((item) => {
 		return item.id === product.id
 			? { ...item, quantity: item.quantity + 1 }
 			: item;
 	});
-}
+  incrementUnitPrice(product);
+  templateMessageSucessCart("Se ha agregado una unidad del producto");
+};
 
 
+// Sacar una unidad al producto
+const removeUnitCartProduct = (product, e) => {
+  const searchProduct = cartList.find((item) => item.id === product.id);
+
+    if(searchProduct.quantity > 1) {
+      cartList = cartList.map((item) => {
+        return item.id === product.id
+          ? { ...item, quantity: item.quantity - 1 }
+          : item;
+      });
+      decrementUnitPrice(product);
+      templateMessageSucessCart("Se ha quitado una unidad del producto");
+      /*e.target.classList.remove("--disabled");*/
+    }
+    /*e.target.classList.add("--disabled");*/
+    return;
+};
+
+
+
+// Incrementar precio del producto
+const incrementUnitPrice = (product) => {
+  cartList = cartList.map((item) => {
+    if (product.priceDiscount === null) {
+      return item.id === product.id 
+      ? { ...item, priceNormal: item.priceNormal + product.priceNormal }
+        : item;
+    } else {
+      return item.id === product.id 
+      ? { ...item, priceDiscount: item.priceDiscount + product.priceDiscount }
+        : item;
+    }
+	});
+};
+
+
+// Decrementar precio del producto
+const decrementUnitPrice = (product) => {
+  cartList = cartList.map((item) => {
+    if (product.priceDiscount === null) {
+      return item.id === product.id 
+      ? { ...item, priceNormal: item.priceNormal - product.priceNormal }
+        : item;
+    } else {
+      return item.id === product.id 
+      ? { ...item, priceDiscount: item.priceDiscount - product.priceDiscount }
+        : item;
+    }
+	});
+};
+
+
+// Calcular precio total de items del carrito
+const totalCartPrice = () => {
+  let prodTotal = 0;
+
+  if (cartList.length) {
+    cartList.map((item) => {
+      if (item.priceDiscount === null) {
+        return prodTotal = prodTotal + item.priceNormal;
+      } else {
+        return prodTotal = prodTotal + item.priceDiscount;
+      }
+    });
+    productsCartTotal.innerHTML = (`$${prodTotal.toFixed(3)}`);
+    productsCartTotalContent.classList.remove("--hidden");
+    return;
+  }
+  
+  productsCartTotal.innerHTML = '';
+  productsCartTotalContent.classList.add("--hidden");
+};
+
+
+// Calcular cantidad de items del carrito
+const totalCartItems = () => {
+  if (cartList.length) {
+    btnIconQuantityCart.classList.remove("--hidden");
+    btnIconQuantityCart.innerHTML = `${cartList.length}`;
+    productsCartQuantity.innerHTML = `(${cartList.length} items)`;
+    return;
+  }    
+  btnIconQuantityCart.classList.add("--hidden");
+  productsCartQuantity.innerHTML = "";
+};
+
+
+// Filtro p/cambio de categoria
 const changeCategoryFilter = ({target}) => {
   tabsContent.classList.remove("--active");
   let categoryActive = target.dataset.category;
 
   setTimeout(() => {
     if (isBtnCategory(target)) {
+      tabsContent.classList.add("--active");
       if(categoryActive === "Todos") {
         renderCardProducts(productsBD);
       } else {
-        const filterProducts = productsBD.filter((product) => {
+          const filterProducts = productsBD.filter((product) => {
           return product.category === categoryActive;
         });
         renderCardProducts(filterProducts);
       }
     }
   }, 150);
-}
+};
 
 
-
-
-
+// Agregar un producto al carrito
 const addProductToCart = (e) => {
   if (!e.target.classList.contains("button--small")) {
 		return;
 	}
 
-  // Capturar ID
-  const productID = Number(e.target.dataset.id);
-
   // Filtrar producto
-  const productCapture = captureProduct(productID);
-
+  const productCapture = captureProduct(Number(e.target.dataset.id));
   // Ver si el id del producto existe en el carrito 
-  if (isExistingCartProduct(productID)) {
+  if (isExistingCartProduct(Number(e.target.dataset.id))) {
     // agregar unidad al producto en carrito
-    addCartProduct(productCapture);
+    addUnitCartProduct(productCapture);
+    templateMessageSucessCart("Se ha agregado una nueva unidad del producto al carrito");
   } else {
     // crear nuevo producto en carrito
     createCartProduct(productCapture);
+    templateMessageSucessCart("Se ha agregado un nuevo producto al carrito");
   }
 
-  renderCartProducts();
+  updateCart();
+};
 
-  console.log(cartList);
+
+// Remover un producto del carrito
+const removeProductToCart = (e) => {
+
+  if (!e.target.classList.contains("button--link-grey") ) {
+		return;
+	}
+
+  if (window.confirm("¿Desea eliminar el producto?")) {
+    const productCapture = captureProduct(Number(e.target.dataset.id));
+
+    cartList = cartList.filter((item) => {
+      return item.id !== productCapture.id;
+    }); 
+
+    templateMessageSucessCart("Se ha eliminado el producto");
+    updateCart();
+  }
+};
+
+
+// Limpiar carrito
+const clearProductsCart = () => {
+  if (enabledOrDisabledBtnCart()) {
+    if (window.confirm("¿Desea limpiar el carrito?")) {
+      clearCart();
+      updateCart();
+      templateMessageSucessCart("Se ha limpiado el carrito");
+    }
+  }
+};
+
+// Completar compra
+const completePayCart = () => {
+  if (enabledOrDisabledBtnCart()) {
+    if (window.confirm("¿Desea completar la compra?")) {
+      clearCart();
+      updateCart();
+      templateMessageSucessCart("Compra Finalizada");
+    }
+  }
+};
+
+// Agregar o quitar unidades al producto
+const addOrRemoveQuantity = (e) => {
+  const productCapture = captureProduct(Number(e.target.dataset.id));
+  if (e.target.classList.contains("--up")) {
+    addUnitCartProduct(productCapture);
+	} else if (e.target.classList.contains("--down")) {
+    removeUnitCartProduct(productCapture, e);
+  }
+  updateCart();
+};
+
+
+const clearInputs = (input) => {
+  IsLengthInput(input);
+  templateMessageSucessInput(input);
+};
+
+const checkTextInput = (input) => {
+  let valid = false;
+  const RegExp = /^[A-Z]+$/i;
+
+
+  if (!IsLengthInput(input)) {
+    templateMessageErrorInput("El campo esta vacio", input);
+    return;
+  } 
+  
+  if (!RegExp.test(input.value)) {
+    templateMessageErrorInput("El campo no debe contener numeros", input);
+    return;
+  }
+
+  if (input.value.length < 5 ) {
+    templateMessageErrorInput("El campo debe tener al menos 5 caracteres", input);
+    return;
+  }
+
+  templateMessageSucessInput(input);
+  valid = true;
+  return valid;
+};
+
+
+const checkEmailInput = (input) => {
+  let valid = false;
+
+  if (!IsLengthInput(input)) {
+    templateMessageErrorInput("El campo esta vacio", input);
+    return;
+  } 
+
+  if(!IsValidEmailInput(input)) {
+    templateMessageErrorInput("El email no es valido", input);
+    return;
+  }
+
+  templateMessageSucessInput(input);
+  valid = true;
+  return valid;
 }
 
 
+const checkMessageInput = (input) => {
+  let valid = false;
+
+  if (!IsLengthInput(input)) {
+    templateMessageErrorInput("El campo esta vacio", input);
+    return;
+  } 
+
+  if (input.value.length < 20 ) {
+    templateMessageErrorInput("El campo mensaje debe tener al menos 20 caracteres", input);
+    return;
+  }
+
+  templateMessageSucessInput(input);
+  valid = true;
+  return valid;
+};
+
 
 // Validacion y almacenamiento de datos
+const updateCart = () => {
+    renderCartProducts();
+    totalCartPrice();
+    totalCartItems();
+    enabledOrDisabledBtnCart();
+    saveCartProducts();
+};
 
+
+const sendContactForm = (e) => {
+  e.preventDefault();
+
+  let nameText = checkTextInput(nameInput);
+  let lastName = checkTextInput(lastnameInput);
+  let email = checkEmailInput(emailInput);
+  let message = checkMessageInput(messageInput);
+
+  if(nameText && lastName && email && message) {
+    templateMessageSucessForm("El mensaje se ha enviado exitosamente");
+    contactForm.reset();
+    removeValueInput(nameInput);
+    removeValueInput(lastnameInput);
+    removeValueInput(emailInput);
+    removeValueInput(messageInput);
+  }
+};
 
 
 // Inicializacion de eventos
 const init = () => { 
   btnMenuDesktop.addEventListener("click", openMenuDesktop);
+  btnMenuSearch.addEventListener("click", openMenuSearch);
   btnCard.addEventListener("click", openMenuCart);
   btnMenuMobile.addEventListener("click", openMenuMobile);
   menuOverlay.addEventListener("click", closeMenuClickOverlay);
   btnCloseMenuMobile.addEventListener("click", closeMenuMobile);
   btnCloseMenuCart.addEventListener("click", closeMenuCart);
-  document.addEventListener("DOMContentLoaded", renderCardProducts(productsBD));
-  document.addEventListener("DOMContentLoaded", renderCartProducts);
   filtersContent.addEventListener("click", changeCategoryFilter);
   productsContent.addEventListener("click", addProductToCart);
+  cartItemContent.addEventListener("click", removeProductToCart);
+  cartItemContent.addEventListener("click", addOrRemoveQuantity);
+  document.addEventListener("DOMContentLoaded", renderCartProducts);
+  document.addEventListener("DOMContentLoaded", renderCardProducts(productsBD));
+  document.addEventListener("DOMContentLoaded", totalCartItems);
+  btnClearCart.addEventListener("click", clearProductsCart);
+  btnFinishCart.addEventListener("click", completePayCart);
+  enabledOrDisabledBtnCart();
+  contactForm.addEventListener("submit", sendContactForm);
+  nameInput.addEventListener("input", () => clearInputs(nameInput));
+	lastnameInput.addEventListener("input", () => clearInputs(lastnameInput));
+	emailInput.addEventListener("input", () => clearInputs(emailInput));
+	messageInput.addEventListener("input", () => clearInputs(messageInput));
 };
 
 init();
