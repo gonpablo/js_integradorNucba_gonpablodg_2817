@@ -10,8 +10,7 @@ const btnClearCart = document.querySelector("#btn-clear-cart");
 const btnFinishCart = document.querySelector("#btn-finish-cart");
 const btnListTabs = document.querySelectorAll(".tabs-primary__item__btn");
 const spinner = document.querySelector(".spinner");
-const btnModalYes = document.querySelector("#modal__btn__yes");
-const btnModalNo = document.querySelector("#modal__btn__no");
+const btnModalOk = document.querySelector("#modal__btn__ok");
 
 
 // Captura contenedores 
@@ -153,21 +152,15 @@ const openMenuSearch = () => {
   menuOverlay.classList.toggle("--active");
 };
 
-const openModalAndValidation = (message) => {
+const showModal = (message) => {
   modal.classList.add("--active");
   modalInner.classList.add("--active");
   modalInnerText.innerHTML = `${message}`
 
-  btnModalYes.addEventListener("click", function() {
+  btnModalOk.addEventListener("click", function() {
     modal.classList.remove("--active");
     modalInner.classList.remove("--active");
     return true;
-  });
-
-  btnModalNo.addEventListener("click", function() {
-    modal.classList.remove("--active");
-    modalInner.classList.remove("--active");
-    return false;      
   });
 }
 
@@ -382,7 +375,7 @@ const removeUnitCartProduct = (product) => {
       });
       decrementUnitPrice(product);
       templateMessageSucessCart("Se ha quitado una unidad del producto");
-    }
+    } 
     return;
 };
 
@@ -481,7 +474,7 @@ const addProductToCart = (e) => {
 // Remover un producto del carrito
 const removeProductToCart = (e) => {
 
-  if (!e.target.classList.contains("button--link-grey") ) {
+  if (!e.target.classList.contains("button--link-grey")) {
 		return;
 	}
 
@@ -489,16 +482,16 @@ const removeProductToCart = (e) => {
     const productCapture = captureProduct(Number(e.target.dataset.id));
 
     spinner.classList.add("--active");
+
+    cartList = cartList.filter((item) => {
+      return item.id !== productCapture.id;
+    }); 
+
     setTimeout(() => {
-      spinner.classList.remove("--active");
-      cartList = cartList.filter((item) => {
-        return item.id !== productCapture.id;
-      }); 
-
-      templateMessageSucessCart("Se ha eliminado el producto");
       updateCart();
-    }, 2000);
-
+      spinner.classList.remove("--active");
+      templateMessageSucessCart("Se ha eliminado el producto");
+    }, 2500);
   }
 };
 
@@ -507,8 +500,8 @@ const removeProductToCart = (e) => {
 const clearProductsCart = () => {
   if (enabledOrDisabledBtnCart()) {
     if (window.confirm("¿Desea limpiar el carrito?")) {
-
       spinner.classList.add("--active");
+      
       setTimeout(() => {
         spinner.classList.remove("--active");
         clearCart();
@@ -522,28 +515,31 @@ const clearProductsCart = () => {
 // Completar compra
 const completePayCart = () => {
   if (enabledOrDisabledBtnCart()) { 
-      const response = openModalAndValidation("¿Desea completar la compra?");
-
-      if (response) {
-      /*if (window.confirm("¿Desea completar la compra?")) { */
+ 
+      if (window.confirm("¿Desea completar la compra?")) { 
         spinner.classList.add("--active");
         setTimeout(() => {
           spinner.classList.remove("--active");
           clearCart();
           updateCart();
-          templateMessageSucessCart("Compra Finalizada");
         }, 2000);
-      }
 
-    console.log("Hola");
+        setTimeout(() => {
+          showModal("La compra ha sido finalizada");
+          closeMenuCart();
+        }, 2500);
+      }
   }
 };
 
 // Agregar o quitar unidades al producto
 const addOrRemoveQuantity = (e) => {
   const productCapture = captureProduct(Number(e.target.dataset.id));
-  spinner.classList.add("--active");
 
+  if (e.target.classList.contains("--up") || e.target.classList.contains("--down")) {
+    spinner.classList.add("--active");
+  }
+  
   setTimeout(() => {
     if (e.target.classList.contains("--up")) {
       addUnitCartProduct(productCapture);
@@ -672,6 +668,7 @@ const init = () => {
   document.addEventListener("DOMContentLoaded", renderCartProducts);
   document.addEventListener("DOMContentLoaded", renderCardProducts(productsBD));
   document.addEventListener("DOMContentLoaded", totalCartItems);
+  document.addEventListener("DOMContentLoaded", totalCartPrice);
   btnClearCart.addEventListener("click", clearProductsCart);
   btnFinishCart.addEventListener("click", completePayCart);
   enabledOrDisabledBtnCart();
